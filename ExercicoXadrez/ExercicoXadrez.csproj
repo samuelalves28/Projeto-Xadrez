@@ -45,6 +45,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tabuleiro\CorModel.cs" />
+    <Compile Include="tabuleiro\PecaModel.cs" />
+    <Compile Include="tabuleiro\PosicaoModel.cs" />
+    <Compile Include="tabuleiro\TabuleiroModel.cs" />
+    <Compile Include="Tela.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
