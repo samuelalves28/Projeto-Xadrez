@@ -18,10 +18,5 @@ namespace ExercicoXadrez.tabuleiro
             Verde,
             Laranja
         }
-
-
-
-
-
     }
 }

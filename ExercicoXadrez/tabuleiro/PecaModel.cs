@@ -12,14 +12,14 @@ namespace tabuleiro
     {
 
         public PosicaoModel Posicao { get; set; }
-        public CorModel Cor { get; protected set; }
+        public CorModel.Cor Cor { get; protected set; }
         public int QtdMovimentos { get; protected set; }
         public TabuleiroModel Tab { get; protected set; }
 
 
-        public PecaModel(PosicaoModel posicao, CorModel cor, TabuleiroModel tab)
+        public PecaModel(TabuleiroModel tab, CorModel.Cor cor)
         {
-            Posicao = posicao;
+            Posicao = null;
             Cor = cor;
             Tab = tab;
             QtdMovimentos = 0;
