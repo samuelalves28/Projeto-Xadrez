@@ -38,12 +38,12 @@ namespace tabuleiro
         public bool ExistePecaNestaPosicao(PosicaoModel pos)
         {
             ValidarPosicao(pos);
-            return PosicaoValida(pos) != null;
+            return Peca(pos) != null;
         }
 
         public bool PosicaoValida(PosicaoModel pos)
         {
-            if (pos.Linha < 0 || pos.Linha > Linhas || pos.Coluna < 0 || pos.Coluna > Colunas)
+            if (pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
                 return false;
 
             return true;

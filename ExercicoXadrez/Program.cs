@@ -13,8 +13,7 @@ namespace ExercicoXadrez
             {
                 TabuleiroModel tab = new TabuleiroModel(8, 8);
                 tab.ColocarPeca(new ReiModel(tab, Cor.Preta), new PosicaoModel(0, 0));
-                tab.ColocarPeca(new TorreModel(tab, Cor.Preta), new PosicaoModel(1, 3));
-                tab.ColocarPeca(new TorreModel(tab, Cor.Preta), new PosicaoModel(1, 5));
+                tab.ColocarPeca(new ReiModel(tab, Cor.Branca), new PosicaoModel(7, 1));
 
                 Tela.ImprimirTabuleiro(tab);
             }
