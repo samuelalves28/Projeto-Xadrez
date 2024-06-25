@@ -1,9 +1,4 @@
 ﻿using ExercicoXadrez.tabuleiro.exception;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace tabuleiro
 {
@@ -26,9 +21,22 @@ namespace tabuleiro
 
         public PecaModel Peca(PosicaoModel pos) => Pecas[pos.Linha, pos.Coluna];
 
+        public PecaModel RetirarPeca(PosicaoModel pos)
+        {
+            if (Peca(pos) == null)
+            {
+                return null;
+            }
+
+            PecaModel aux = Peca(pos);
+            aux.Posicao = null;
+            Pecas[pos.Linha, pos.Coluna] = null;
+            return aux;
+        }
+
         public void ColocarPeca(PecaModel peca, PosicaoModel pos)
         {
-            if(ExistePecaNestaPosicao(pos))
+            if (ExistePecaNestaPosicao(pos))
                 throw new ExcpetionModel("Já existe uma peça nesta posição!");
 
             Pecas[pos.Linha, pos.Coluna] = peca;
