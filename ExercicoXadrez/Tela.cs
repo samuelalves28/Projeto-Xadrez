@@ -12,20 +12,41 @@ namespace ExercicoXadrez
             {
                 Console.Write(8 - i + " ");
                 for (int j = 0; j < tab.Colunas; j++)
-                {
-                    if (tab.Peca(i, j) != null)
-                    {
-                        ImprimirPeca(tab.Peca(i, j));
-                        Console.Write(" ");
-                    }
-                    else
-                        Console.Write(" - ");
-                }
+                    ImprimirPeca(tab.Peca(i, j));
 
                 Console.WriteLine();
             }
             Console.WriteLine("   a  b  c  d  e  f  g  h");
         }
+
+        public static void ImprimirTabuleiro(TabuleiroModel tab, bool[,] posicoesPossiveis)
+        {
+            ConsoleColor fundoOrginial = Console.BackgroundColor;
+            ConsoleColor fundoAlterado = ConsoleColor.Red;
+
+            for (int i = 0; i < tab.Linhas; i++)
+            {
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < tab.Colunas; j++)
+                {
+                    if (posicoesPossiveis[i, j])
+                        Console.BackgroundColor = fundoAlterado;
+                    else
+                        Console.BackgroundColor = fundoOrginial;
+
+                    ImprimirPeca(tab.Peca(i, j));
+                    Console.BackgroundColor = fundoOrginial;
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("   a  b  c  d  e  f  g  h");
+            Console.BackgroundColor = fundoOrginial;
+        }
+
+
+
 
         public static PosicaoXadrezModel LerPosicaoXadrez()
         {
@@ -38,16 +59,24 @@ namespace ExercicoXadrez
 
         public static void ImprimirPeca(PecaModel peca)
         {
-            if (peca.Cor == tabuleiro.CorModel.Cor.Branca)
-                Console.Write(" " + peca + "");
+            if (peca == null)
+            {
+                Console.Write(" - ");
+            }
             else
             {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(" " + peca + "");
-                Console.ForegroundColor = aux;
+                if (peca.Cor == tabuleiro.CorModel.Cor.Branca)
+                    Console.Write(" " + peca + "");
+                else
+                {
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(" " + peca + "");
+                    Console.ForegroundColor = aux;
+                }
+
+                Console.Write(" ");
             }
         }
-
     }
 }

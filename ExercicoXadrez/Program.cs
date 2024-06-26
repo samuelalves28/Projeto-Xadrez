@@ -21,6 +21,12 @@ namespace ExercicoXadrez
                     Console.Write("Origem: ");
                     PosicaoModel origem = Tela.LerPosicaoXadrez().ToPosicao();
 
+                    bool[,] PosicoesPossiveis = partidaDeXadrezModel.Tab.Peca(origem).MovimentosPossiveis();
+
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab, PosicoesPossiveis);
+
+                    Console.WriteLine();
                     Console.Write("Destino: ");
                     PosicaoModel destino = Tela.LerPosicaoXadrez().ToPosicao();
 

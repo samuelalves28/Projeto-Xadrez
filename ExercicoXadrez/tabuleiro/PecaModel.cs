@@ -2,7 +2,7 @@
 
 namespace tabuleiro
 {
-    public class PecaModel
+    public abstract class PecaModel
     {
         public PosicaoModel Posicao { get; set; }
         public CorModel.Cor Cor { get; protected set; }
@@ -18,5 +18,7 @@ namespace tabuleiro
         }
 
         public void IncrimentarQuantidadeMovimento() => QtdMovimentos++;
+
+        public abstract bool[,] MovimentosPossiveis();
     }
 }
