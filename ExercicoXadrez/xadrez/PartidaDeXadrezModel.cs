@@ -11,11 +11,12 @@ namespace ExercicoXadrez.xadrez
     public class PartidaDeXadrezModel
     {
         public TabuleiroModel Tab { get; private set; }
+        
         private int Turno;
+        
         private CorModel.Cor JogadorAtual;
+
         public bool PartidaTerminada { get; private set; }
-
-
 
         public PartidaDeXadrezModel()
         {
@@ -36,6 +37,8 @@ namespace ExercicoXadrez.xadrez
 
         private void ColocarPecas()
         {
+            #region Peças Brancas
+
             Tab.ColocarPeca(new TorreModel(Tab, CorModel.Cor.Branca), new PosicaoXadrezModel(1, 'c').ToPosicao());
             Tab.ColocarPeca(new TorreModel(Tab, CorModel.Cor.Branca), new PosicaoXadrezModel(2, 'c').ToPosicao());
 
@@ -44,6 +47,9 @@ namespace ExercicoXadrez.xadrez
 
             Tab.ColocarPeca(new ReiModel(Tab, CorModel.Cor.Branca), new PosicaoXadrezModel(1, 'd').ToPosicao());
 
+            #endregion
+
+            #region Peças Pretas
 
             Tab.ColocarPeca(new TorreModel(Tab, CorModel.Cor.Preta), new PosicaoXadrezModel(7, 'c').ToPosicao());
             Tab.ColocarPeca(new TorreModel(Tab, CorModel.Cor.Preta), new PosicaoXadrezModel(8, 'c').ToPosicao());
@@ -52,6 +58,8 @@ namespace ExercicoXadrez.xadrez
             Tab.ColocarPeca(new TorreModel(Tab, CorModel.Cor.Preta), new PosicaoXadrezModel(8, 'e').ToPosicao());
 
             Tab.ColocarPeca(new ReiModel(Tab, CorModel.Cor.Preta), new PosicaoXadrezModel(8, 'd').ToPosicao());
+            
+            #endregion
         }
     }
 }

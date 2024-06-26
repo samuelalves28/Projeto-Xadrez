@@ -13,14 +13,8 @@ namespace ExercicoXadrez.xadrez
             Coluna = coluna;
         }
 
-        public PosicaoModel ToPosicao()
-        {
-            return new PosicaoModel(8 - Linha, Coluna - 'a');
-        }
+        public PosicaoModel ToPosicao() => new PosicaoModel(8 - Linha, Coluna - 'a');
 
-        public override string ToString()
-        {
-            return "" + Coluna + Linha;
-        }
+        public override string ToString() => "" + Coluna + Linha;
     }
 }

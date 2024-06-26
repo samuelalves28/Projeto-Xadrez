@@ -15,6 +15,5 @@ namespace ExercicoXadrez.xadrez
         }
 
         public override string ToString() => "R";
-
     }
 }

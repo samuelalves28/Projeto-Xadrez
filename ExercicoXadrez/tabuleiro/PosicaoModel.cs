@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace tabuleiro
+﻿namespace tabuleiro
 {
     public class PosicaoModel
     {
         public int Linha { get; set; }
-        public int Coluna {  get; set; }
+        public int Coluna { get; set; }
 
         public PosicaoModel(int linha, int coluna)
         {
@@ -17,11 +11,6 @@ namespace tabuleiro
             Coluna = coluna;
         }
 
-        public override string ToString()
-        {
-            return Linha
-                + ", "
-                + Coluna;
-        }
+        public override string ToString() => Linha + ", " + Coluna;
     }
 }

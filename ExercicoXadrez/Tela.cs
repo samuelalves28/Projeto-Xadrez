@@ -29,20 +29,17 @@ namespace ExercicoXadrez
 
         public static PosicaoXadrezModel LerPosicaoXadrez()
         {
-            string s = Console.ReadLine();
-            char linha = s[0];
-            int coluna = int.Parse(s[1] + "");
+            string posicaoLinhaColuna = Console.ReadLine();
+            char linha = posicaoLinhaColuna[0];
+            int coluna = int.Parse(posicaoLinhaColuna[1] + "");
 
             return new PosicaoXadrezModel(coluna, linha);
-
         }
 
         public static void ImprimirPeca(PecaModel peca)
         {
             if (peca.Cor == tabuleiro.CorModel.Cor.Branca)
-            {
                 Console.Write(" " + peca + "");
-            }
             else
             {
                 ConsoleColor aux = Console.ForegroundColor;

@@ -5,10 +5,10 @@ namespace tabuleiro
     public class TabuleiroModel
     {
         public int Linhas { get; set; }
+
         public int Colunas { get; set; }
 
         public PecaModel[,] Pecas;
-
 
         public TabuleiroModel(int linhas, int colunas)
         {
@@ -24,9 +24,7 @@ namespace tabuleiro
         public PecaModel RetirarPeca(PosicaoModel pos)
         {
             if (Peca(pos) == null)
-            {
                 return null;
-            }
 
             PecaModel aux = Peca(pos);
             aux.Posicao = null;
@@ -61,7 +59,6 @@ namespace tabuleiro
         {
             if (!PosicaoValida(pos))
                 throw new ExcpetionModel("Posição inválida");
-
         }
     }
 }
