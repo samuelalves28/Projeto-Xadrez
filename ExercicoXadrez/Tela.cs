@@ -45,9 +45,6 @@ namespace ExercicoXadrez
             Console.BackgroundColor = fundoOrginial;
         }
 
-
-
-
         public static PosicaoXadrezModel LerPosicaoXadrez()
         {
             string posicaoLinhaColuna = Console.ReadLine();

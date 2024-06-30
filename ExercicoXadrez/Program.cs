@@ -1,4 +1,5 @@
-﻿using ExercicoXadrez.xadrez;
+﻿using ExercicoXadrez.tabuleiro.exception;
+using ExercicoXadrez.xadrez;
 using System;
 using tabuleiro;
 
@@ -14,26 +15,41 @@ namespace ExercicoXadrez
 
                 while (!partidaDeXadrezModel.PartidaTerminada)
                 {
-                    Console.Clear();
-                    Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab);
+                    try
+                    {
+                        Console.Clear();
+                        Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab);
 
-                    Console.WriteLine();
-                    Console.Write("Origem: ");
-                    PosicaoModel origem = Tela.LerPosicaoXadrez().ToPosicao();
+                        Console.WriteLine();
+                        Console.WriteLine("Turno: " + partidaDeXadrezModel.Turno);
+                        Console.WriteLine("Aguardando jogada: " + partidaDeXadrezModel.JogadorAtual);
 
-                    bool[,] PosicoesPossiveis = partidaDeXadrezModel.Tab.Peca(origem).MovimentosPossiveis();
+                        Console.WriteLine();
+                        Console.Write("Origem: ");
+                        PosicaoModel origem = Tela.LerPosicaoXadrez().ToPosicao();
+                        partidaDeXadrezModel.ValidaPosicaoDeOrigem(origem);
 
-                    Console.Clear();
-                    Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab, PosicoesPossiveis);
+                        bool[,] PosicoesPossiveis = partidaDeXadrezModel.Tab.Peca(origem).MovimentosPossiveis();
 
-                    Console.WriteLine();
-                    Console.Write("Destino: ");
-                    PosicaoModel destino = Tela.LerPosicaoXadrez().ToPosicao();
+                        Console.Clear();
+                        Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab, PosicoesPossiveis);
 
-                    partidaDeXadrezModel.ExecutaMovimento(origem, destino);
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
+                        PosicaoModel destino = Tela.LerPosicaoXadrez().ToPosicao();
+                        partidaDeXadrezModel.ValidaPosicaoDeDestino(origem, destino);
+
+
+                        partidaDeXadrezModel.RealizaJogada(origem, destino);
+                    }
+                    catch (ExcpetionModel ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadLine();
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (ExcpetionModel ex)
             {
                 Console.WriteLine(ex.Message);
             }
