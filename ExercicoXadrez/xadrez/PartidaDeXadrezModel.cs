@@ -1,32 +1,37 @@
 ﻿using ExercicoXadrez.tabuleiro;
 using ExercicoXadrez.tabuleiro.exception;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using tabuleiro;
 
 namespace ExercicoXadrez.xadrez
 {
     public class PartidaDeXadrezModel
     {
+        #region Campos
+
         public TabuleiroModel Tab { get; private set; }
 
         public int Turno { get; private set; }
 
         public CorModel.Cor JogadorAtual { get; private set; }
 
-        public bool PartidaTerminada { get; private set; }
+        public bool IsPartidaTerminada { get; private set; }
+
+        public bool IsXeque { get; private set; }
 
         private HashSet<PecaModel> Pecas;
+
         private HashSet<PecaModel> Capturadas;
 
+        #endregion
+
+        #region Métodos Públicos
 
         public PartidaDeXadrezModel()
         {
             Tab = new TabuleiroModel(8, 8);
-            PartidaTerminada = false;
+            IsPartidaTerminada = false;
+            IsXeque = false;
             Turno = 1;
             JogadorAtual = CorModel.Cor.Branca;
             Pecas = new HashSet<PecaModel>();
@@ -37,9 +42,54 @@ namespace ExercicoXadrez.xadrez
 
         public void RealizaJogada(PosicaoModel origem, PosicaoModel destino)
         {
-            ExecutaMovimento(origem, destino);
-            Turno++;
-            MudaJogador();
+            PecaModel pecaCapturada = ExecutaMovimento(origem, destino);
+
+            if (EstaEmXeque(JogadorAtual))
+            {
+                DesfazMovimento(origem, destino, pecaCapturada);
+                throw new ExcpetionModel("Você não pode se colocar em cheque");
+            }
+
+            if (EstaEmXeque(Adversaria(JogadorAtual)))
+                IsXeque = true;
+            else
+                IsXeque = false;
+
+            if (TesteXequeMate(Adversaria(JogadorAtual)))
+                IsPartidaTerminada = true;
+            else
+            {
+                Turno++;
+                MudaJogador();
+            }
+        }
+
+        public void DesfazMovimento(PosicaoModel origem, PosicaoModel destino, PecaModel pecaCapturada)
+        {
+            PecaModel peca = Tab.RetirarPeca(destino);
+            peca.DecrementarQuantidadeMovimento();
+
+            if (pecaCapturada != null)
+            {
+                Tab.ColocarPeca(pecaCapturada, destino);
+                Capturadas.Remove(pecaCapturada);
+            }
+
+            Tab.ColocarPeca(peca, origem);
+        }
+
+        public PecaModel ExecutaMovimento(PosicaoModel origem, PosicaoModel destino)
+        {
+            PecaModel p = Tab.RetirarPeca(origem);
+            p.IncrimentarQuantidadeMovimento();
+
+            PecaModel pecaCapturada = Tab.RetirarPeca(destino);
+            Tab.ColocarPeca(p, destino);
+
+            if (pecaCapturada != null)
+                Capturadas.Add(pecaCapturada);
+
+            return pecaCapturada;
         }
 
         public void ValidaPosicaoDeOrigem(PosicaoModel posicao)
@@ -68,20 +118,69 @@ namespace ExercicoXadrez.xadrez
                 JogadorAtual = CorModel.Cor.Preta;
         }
 
-        public void ExecutaMovimento(PosicaoModel origem, PosicaoModel destino)
+        public void ColocarNovaPeca(int linha, char coluna, PecaModel peca)
         {
-            PecaModel p = Tab.RetirarPeca(origem);
-            p.IncrimentarQuantidadeMovimento();
-            PecaModel pecaCapturada = Tab.RetirarPeca(destino);
-            Tab.ColocarPeca(p, destino);
-            if (pecaCapturada != null)
-                Capturadas.Add(pecaCapturada);
+            Tab.ColocarPeca(peca, new PosicaoXadrezModel(linha, coluna).ToPosicao());
+            Pecas.Add(peca);
         }
+
+        public bool EstaEmXeque(CorModel.Cor cor)
+        {
+            var pecaRei = Rei(cor);
+
+            if (pecaRei == null)
+                throw new ExcpetionModel("Não tem rei da cor " + cor + " no tabuleiro");
+
+            foreach (var peca in PecasEmJogo(Adversaria(cor)))
+            {
+                bool[,] mat = peca.MovimentosPossiveis();
+
+                if (mat[pecaRei.Posicao.Linha, pecaRei.Posicao.Coluna])
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool TesteXequeMate(CorModel.Cor cor)
+        {
+            if (!IsXeque)
+                return false;
+
+            foreach (var peca in PecasEmJogo(cor))
+            {
+                bool[,] mat = peca.MovimentosPossiveis();
+
+                for (int i = 0; i < Tab.Linhas; i++)
+                {
+                    for (int j = 0; j < Tab.Colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            var origem = peca.Posicao;
+                            var destino = new PosicaoModel(i, j);
+                            PecaModel pecaCaptura = ExecutaMovimento(origem, destino);
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazMovimento(origem, destino, pecaCaptura);
+                            if (!testeXeque)
+                                return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+        #endregion
+
+        #region HashSet 
 
         public HashSet<PecaModel> PecasCapturadas(CorModel.Cor cor)
         {
             HashSet<PecaModel> aux = new HashSet<PecaModel>();
-            foreach (var item in aux)
+            foreach (var item in Capturadas)
                 if (item.Cor == cor)
                     aux.Add(item);
 
@@ -99,11 +198,9 @@ namespace ExercicoXadrez.xadrez
             return aux;
         }
 
-        public void ColocarNovaPeca(int linha, char coluna, PecaModel peca)
-        {
-            Tab.ColocarPeca(peca, new PosicaoXadrezModel(linha, coluna).ToPosicao());
-            Pecas.Add(peca);
-        }
+        #endregion
+
+        #region Métodos Privados
 
         private void ColocarPecas()
         {
@@ -111,9 +208,9 @@ namespace ExercicoXadrez.xadrez
 
             ColocarNovaPeca(1, 'c', new TorreModel(Tab, CorModel.Cor.Branca));
             ColocarNovaPeca(2, 'c', new TorreModel(Tab, CorModel.Cor.Branca));
+            ColocarNovaPeca(1, 'd', new ReiModel(Tab, CorModel.Cor.Branca));
             ColocarNovaPeca(2, 'd', new TorreModel(Tab, CorModel.Cor.Branca));
             ColocarNovaPeca(2, 'e', new TorreModel(Tab, CorModel.Cor.Branca));
-            ColocarNovaPeca(1, 'd', new TorreModel(Tab, CorModel.Cor.Branca));
 
             #endregion
 
@@ -122,10 +219,29 @@ namespace ExercicoXadrez.xadrez
             ColocarNovaPeca(7, 'c', new TorreModel(Tab, CorModel.Cor.Preta));
             ColocarNovaPeca(8, 'c', new TorreModel(Tab, CorModel.Cor.Preta));
             ColocarNovaPeca(7, 'd', new TorreModel(Tab, CorModel.Cor.Preta));
+            ColocarNovaPeca(8, 'd', new ReiModel(Tab, CorModel.Cor.Preta));
             ColocarNovaPeca(8, 'e', new TorreModel(Tab, CorModel.Cor.Preta));
-            ColocarNovaPeca(8, 'd', new TorreModel(Tab, CorModel.Cor.Branca));
 
             #endregion
         }
+
+        private CorModel.Cor Adversaria(CorModel.Cor cor)
+        {
+            if (cor == CorModel.Cor.Branca)
+                return CorModel.Cor.Preta;
+            else
+                return CorModel.Cor.Branca;
+        }
+
+        private PecaModel Rei(CorModel.Cor cor)
+        {
+            foreach (var peca in PecasEmJogo(cor))
+                if (peca is ReiModel)
+                    return peca;
+
+            return null;
+        }
+
+        #endregion
     }
 }

@@ -1,11 +1,36 @@
 ﻿using ExercicoXadrez.xadrez;
 using System;
+using System.Collections.Generic;
 using tabuleiro;
 
 namespace ExercicoXadrez
 {
     public class Tela
     {
+        public static void ImprimirPartida(PartidaDeXadrezModel partida)
+        {
+            ImprimirTabuleiro(partida.Tab);
+
+            Console.WriteLine();
+            ImprimirPecasCapturadas(partida);
+
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+
+            if (!partida.IsPartidaTerminada)
+            {
+                Console.WriteLine("Aguardando jogada: " + partida.JogadorAtual);
+
+                if (partida.IsXeque)
+                    Console.WriteLine("XEQUE!!");
+            }
+            else
+            {
+                Console.WriteLine("XEQUE MATE!!");
+                Console.WriteLine("VENCEDOR: " + partida.JogadorAtual);
+            }
+        }
+
         public static void ImprimirTabuleiro(TabuleiroModel tab)
         {
             for (int i = 0; i < tab.Linhas; i++)
@@ -54,12 +79,37 @@ namespace ExercicoXadrez
             return new PosicaoXadrezModel(coluna, linha);
         }
 
+        public static void ImprimirConjunto(HashSet<PecaModel> conjuntos)
+        {
+            Console.Write("[ ");
+
+            foreach (var item in conjuntos)
+                Console.Write(item + " ");
+
+            Console.Write(" ]");
+        }
+
+        public static void ImprimirPecasCapturadas(PartidaDeXadrezModel paritda)
+        {
+            Console.WriteLine("Peças Capturadas");
+            Console.Write("Peças Brancas: ");
+            ImprimirConjunto(paritda.PecasCapturadas(tabuleiro.CorModel.Cor.Branca));
+
+            Console.WriteLine();
+            ConsoleColor aux = Console.ForegroundColor;
+
+            Console.Write("Peças Pretas: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            ImprimirConjunto(paritda.PecasCapturadas(tabuleiro.CorModel.Cor.Preta));
+
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
         public static void ImprimirPeca(PecaModel peca)
         {
             if (peca == null)
-            {
                 Console.Write(" - ");
-            }
             else
             {
                 if (peca.Cor == tabuleiro.CorModel.Cor.Branca)

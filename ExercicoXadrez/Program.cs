@@ -13,16 +13,12 @@ namespace ExercicoXadrez
             {
                 PartidaDeXadrezModel partidaDeXadrezModel = new PartidaDeXadrezModel();
 
-                while (!partidaDeXadrezModel.PartidaTerminada)
+                while (!partidaDeXadrezModel.IsPartidaTerminada)
                 {
                     try
                     {
                         Console.Clear();
-                        Tela.ImprimirTabuleiro(partidaDeXadrezModel.Tab);
-
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + partidaDeXadrezModel.Turno);
-                        Console.WriteLine("Aguardando jogada: " + partidaDeXadrezModel.JogadorAtual);
+                        Tela.ImprimirPartida(partidaDeXadrezModel);
 
                         Console.WriteLine();
                         Console.Write("Origem: ");
@@ -48,6 +44,9 @@ namespace ExercicoXadrez
                         Console.ReadLine();
                     }
                 }
+
+                Console.Clear();
+                Tela.ImprimirPartida(partidaDeXadrezModel);
             }
             catch (ExcpetionModel ex)
             {

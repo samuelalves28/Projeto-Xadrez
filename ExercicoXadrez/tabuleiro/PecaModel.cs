@@ -18,6 +18,7 @@ namespace tabuleiro
         }
 
         public void IncrimentarQuantidadeMovimento() => QtdMovimentos++;
+        public void DecrementarQuantidadeMovimento() => QtdMovimentos--;
 
         public bool ExiteMovimentoPossivel()
         {
