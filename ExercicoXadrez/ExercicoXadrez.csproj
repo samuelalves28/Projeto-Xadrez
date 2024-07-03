@@ -51,7 +51,11 @@
     <Compile Include="tabuleiro\PosicaoModel.cs" />
     <Compile Include="tabuleiro\TabuleiroModel.cs" />
     <Compile Include="Tela.cs" />
+    <Compile Include="xadrez\BispoModel.cs" />
+    <Compile Include="xadrez\CavaloModel.cs" />
+    <Compile Include="xadrez\DamaModel.cs" />
     <Compile Include="xadrez\PartidaDeXadrezModel.cs" />
+    <Compile Include="xadrez\PeaoModel.cs" />
     <Compile Include="xadrez\PosicaoXadrezModel.cs" />
     <Compile Include="xadrez\ReiModel.cs" />
     <Compile Include="xadrez\TorreModel.cs" />

@@ -2,6 +2,7 @@
 using ExercicoXadrez.tabuleiro.exception;
 using System.Collections.Generic;
 using tabuleiro;
+using static ExercicoXadrez.tabuleiro.CorModel;
 
 namespace ExercicoXadrez.xadrez
 {
@@ -23,6 +24,8 @@ namespace ExercicoXadrez.xadrez
 
         private HashSet<PecaModel> Capturadas;
 
+        public PecaModel VulneravelEnPassant { get; private set; }
+
         #endregion
 
         #region Métodos Públicos
@@ -34,6 +37,7 @@ namespace ExercicoXadrez.xadrez
             IsXeque = false;
             Turno = 1;
             JogadorAtual = CorModel.Cor.Branca;
+            VulneravelEnPassant = null;
             Pecas = new HashSet<PecaModel>();
             Capturadas = new HashSet<PecaModel>();
 
@@ -106,7 +110,7 @@ namespace ExercicoXadrez.xadrez
 
         public void ValidaPosicaoDeDestino(PosicaoModel posicaoOrigem, PosicaoModel posicaoDestino)
         {
-            if (!Tab.Peca(posicaoOrigem).PodeMoverPara(posicaoDestino))
+            if (!Tab.Peca(posicaoOrigem).PodePossivel(posicaoDestino))
                 throw new ExcpetionModel("Posição de destino inválida");
         }
 
@@ -204,25 +208,40 @@ namespace ExercicoXadrez.xadrez
 
         private void ColocarPecas()
         {
-            #region Peças Brancas
 
-            ColocarNovaPeca(1, 'c', new TorreModel(Tab, CorModel.Cor.Branca));
-            ColocarNovaPeca(2, 'c', new TorreModel(Tab, CorModel.Cor.Branca));
-            ColocarNovaPeca(1, 'd', new ReiModel(Tab, CorModel.Cor.Branca));
-            ColocarNovaPeca(2, 'd', new TorreModel(Tab, CorModel.Cor.Branca));
-            ColocarNovaPeca(2, 'e', new TorreModel(Tab, CorModel.Cor.Branca));
+            ColocarNovaPeca(1, 'a', new TorreModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'b', new CavaloModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'c', new BispoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'd', new DamaModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'e', new ReiModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'f', new BispoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'g', new CavaloModel(Tab, Cor.Branca));
+            ColocarNovaPeca(1, 'h', new TorreModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'a', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'b', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'c', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'd', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'e', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'f', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'g', new PeaoModel(Tab, Cor.Branca));
+            ColocarNovaPeca(2, 'h', new PeaoModel(Tab, Cor.Branca));
 
-            #endregion
-
-            #region Peças Pretas
-
-            ColocarNovaPeca(7, 'c', new TorreModel(Tab, CorModel.Cor.Preta));
-            ColocarNovaPeca(8, 'c', new TorreModel(Tab, CorModel.Cor.Preta));
-            ColocarNovaPeca(7, 'd', new TorreModel(Tab, CorModel.Cor.Preta));
-            ColocarNovaPeca(8, 'd', new ReiModel(Tab, CorModel.Cor.Preta));
-            ColocarNovaPeca(8, 'e', new TorreModel(Tab, CorModel.Cor.Preta));
-
-            #endregion
+            ColocarNovaPeca(8, 'b', new CavaloModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'c', new BispoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'd', new DamaModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'e', new ReiModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'f', new BispoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'g', new CavaloModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'a', new TorreModel(Tab, Cor.Preta));
+            ColocarNovaPeca(8, 'h', new TorreModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'a', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'b', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'c', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'd', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'e', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'f', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'g', new PeaoModel(Tab, Cor.Preta));
+            ColocarNovaPeca(7, 'h', new PeaoModel(Tab, Cor.Preta));
         }
 
         private CorModel.Cor Adversaria(CorModel.Cor cor)

@@ -3,13 +3,13 @@ using tabuleiro;
 
 namespace ExercicoXadrez.xadrez
 {
-    public class ReiModel : PecaModel
+    public class CavaloModel : PecaModel
     {
-        public ReiModel(TabuleiroModel tab, CorModel.Cor cor) : base(tab, cor)
+        public CavaloModel(TabuleiroModel tab, CorModel.Cor cor) : base(tab, cor)
         {
         }
 
-        public override string ToString() => "R";
+        public override string ToString() => "C";
 
         private bool PodeMover(PosicaoModel pos)
         {
@@ -23,43 +23,35 @@ namespace ExercicoXadrez.xadrez
 
             PosicaoModel pos = new PosicaoModel(0, 0);
 
-            //Acima
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna);
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 2);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //NE
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 1);
+            pos.DefinirValores(Posicao.Linha - 2, Posicao.Coluna - 1);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //Direita
-            pos.DefinirValores(Posicao.Linha, Posicao.Coluna + 1);
+            pos.DefinirValores(Posicao.Linha - 2, Posicao.Coluna + 1);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //SE
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 1);
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 2);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //Abaixo
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna);
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 2);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //SO
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 1);
+            pos.DefinirValores(Posicao.Linha + 2, Posicao.Coluna + 1);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //Esquerda
-            pos.DefinirValores(Posicao.Linha, Posicao.Coluna - 1);
+            pos.DefinirValores(Posicao.Linha + 2, Posicao.Coluna - 1);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
-            //NO
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 1);
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 2);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
                 matriz[pos.Linha, pos.Coluna] = true;
 
